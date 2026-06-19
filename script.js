@@ -1,13 +1,30 @@
 const speed = 50;
-
 let i = 0;
 let sent = 0;
+let nextI = 0;
+let middleSend = 0;
+let middleI = 0;
+let lastSend = 0;
+let lastI = 0;
+let currentQuestion = 1; 
 
 const intro=[
     ">> LOOK WHAT THE BAT DRAGGED IN. WHAT DO YOU SAY WE PLAY A LITTLE GAME?",
     ">> PROCEED [Y/N]",
     ">> THREE CORRECT ANSWERS AND THE TRUTH WILL BE EXPOSED. LET'S GET STARTED.",
     ">> WHAT IS BLACK AND BLUE AND DEAD ALL OVER?"
+];
+
+const nextLines = [
+    ">> CORRECT ;)",
+    ">> YOU'RE ON A CASE, YOU ARE A DETECTIVE AREN'T YOU?",
+    ">> RICH CREATURES OF THE NIGHT BUNDLED UP, WHO ARE THEY?"
+];
+
+const middleLines = [ 
+    ">> ANYONE WOULD'VE GUESSED THAT ONE.",
+    ">> BUT DON'T GET COCKY NOW, CAUSE YOU'RE NOT THERE YET.",
+    ">> NOW FOR YOUR LAST RIDDLE, THREE MUSKETEERS, THE ONES BEHIND THIS MASTERPIECE, WHO ARE THEY?"
 ];
 
 
@@ -33,6 +50,7 @@ function intro_writer(){
 
         setTimeout(intro_writer, 1000);
     }
+    
 }
 
 else if(sent === 2 && i === 0){
@@ -78,34 +96,123 @@ else{
 
 function answerInput(){
     const answerDiv = document.getElementById("intro");
-
-    answerDiv.innerHTML += "<br>";
-
-    answerDiv.innerHTML += `<span class="prompt"> >> ANSWER: </span>
-    <input type="text" id="playerAnswer" class="terminal-input" autofocus onkeydown= checkAnswer(event)>
-    `;
+    
+    const row = document.createElement("div");
+    row.className = "input-row";
+    row.innerHTML = `<span class="prompt"> >> ANSWER: </span>`;
 
     const inputField = document.createElement("input");
     inputField.type = "text";
     inputField.id = "playerAnswer";
     inputField.className = "terminal-input";
-    inputField.autofocus = true;
-    inputField.onkeydown = checkAnswer;
+    inputField.autocomplete = "off";
+    
+    
+    inputField.addEventListener("keydown", checkAnswer);
 
+    row.appendChild(inputField);
+    answerDiv.appendChild(row);
     inputField.focus();
+}
+
+function writeNextLines() {
+    if (nextSend < nextLines.length) {
+        let currentLine = nextLines[nextSend];
+        if (nextI < currentLine.length) {
+            document.getElementById('intro').innerHTML += currentLine.charAt(nextI);
+            nextI++;
+            setTimeout(writeNextLines, speed);
+        } else {
+            nextSend++;
+            nextI = 0;
+            document.getElementById('intro').innerHTML += "<br>";
+            setTimeout(writeNextLines, 1000);
+        }
+    } else {
+        nextSend = 0;
+        nextI = 0;
+        answerInput(); 
+    }
+}
 
 
+function writeMiddleLines() {
+    if (middleSend < middleLines.length) {
+        let currentLine = middleLines[middleSend];
+        if (middleI < currentLine.length) {
+            document.getElementById('intro').innerHTML += currentLine.charAt(middleI);
+            middleI++;
+            setTimeout(writeMiddleLines, speed);
+        } else {
+            middleSend++;
+            middleI = 0;
+            document.getElementById('intro').innerHTML += "<br>";
+            setTimeout(writeMiddleLines, 1000);
+        }
+    } else {
+        middleSend = 0;
+        middleI = 0;
+        answerInput();
+    }
+}
 
+function writeFinalLines() {
+    if (lastSend < finalLines.length) {
+        let currentLine = finalLines[lastSend];
+        if (lastI < currentLine.length) {
+            document.getElementById('intro').innerHTML += currentLine.charAt(lastI);
+            lastI++;
+            setTimeout(writeFinalLines, speed);
+        } else {
+            lastSend++;
+            lastI = 0;
+            document.getElementById('intro').innerHTML += "<br>";
+            setTimeout(writeFinalLines, 1000);
+        }
+    }
 }
 
 function checkAnswer(event){
     if(event.key === "Enter"){
         const inputField = document.getElementById("playerAnswer");
-        const answer = inputField.value.trim();
+        const answer = inputField.value.trim().toLowerCase();
 
-        inputField.remove();
-        document.getElementById("intro").innerHTML += `${answer.toUpperCase()} <br>`;
+        inputField.disabled = true;
+        inputField.id = ""; 
+
+        const parentRow = inputField.parentElement;
+        parentRow.innerHTML = `<span class="prompt"> >> ANSWER: </span> ${answer.toUpperCase()}`;
+        document.getElementById("intro").innerHTML += "<br>";
 
         
+        if (currentQuestion === 1) {
+            if (answer === "red hood") {
+                currentQuestion = 2;
+                setTimeout(writeNextLines, 1000);
+            } else {
+                document.getElementById('intro').innerHTML += ">> INCORRECT, TRY USING THAT MONKEY BRAIN OF YOURS HARDER. <br>";
+                answerInput();
+            } 
+        } 
+        
+        else if (currentQuestion === 2) {
+            if (answer === "court of owls") {
+                currentQuestion = 3;
+                setTimeout(writeMiddleLines, 1000);
+            } else {
+                document.getElementById('intro').innerHTML += ">> INCORRECT, TRY USING THAT MONKEY BRAIN OF YOURS HARDER. <br>";
+                answerInput();
+            }
+        }
+        
+        else if (currentQuestion === 3) {
+            if (answer === "meteor://strike" ) { 
+                currentQuestion = 4;
+                setTimeout(writeFinalLines, 1000);
+            } else {
+                document.getElementById('intro').innerHTML += ">> INCORRECT, TRY USING THAT MONKEY BRAIN OF YOURS HARDER. <br>";
+                answerInput();
+            }
+        }
     }
 }
