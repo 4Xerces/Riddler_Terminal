@@ -1,6 +1,7 @@
 const speed = 50;
 let i = 0;
 let sent = 0;
+let nextSend = 0;
 let nextI = 0;
 let middleSend = 0;
 let middleI = 0;
@@ -8,11 +9,11 @@ let lastSend = 0;
 let lastI = 0;
 let currentQuestion = 1; 
 
-const intro=[
+const intro = [
     ">> LOOK WHAT THE BAT DRAGGED IN. WHAT DO YOU SAY WE PLAY A LITTLE GAME?",
     ">> PROCEED [Y/N]",
     ">> THREE CORRECT ANSWERS AND THE TRUTH WILL BE EXPOSED. LET'S GET STARTED.",
-    ">> WHAT IS BLACK AND BLUE AND DEAD ALL OVER?"
+    ">> HE IS NO ONE'S SON, LOOK AT HIS DOSSIER. HOODED MAN THAT'S CALLED..."
 ];
 
 const nextLines = [
@@ -25,6 +26,12 @@ const middleLines = [
     ">> ANYONE WOULD'VE GUESSED THAT ONE.",
     ">> BUT DON'T GET COCKY NOW, CAUSE YOU'RE NOT THERE YET.",
     ">> NOW FOR YOUR LAST RIDDLE, THREE MUSKETEERS, THE ONES BEHIND THIS MASTERPIECE, WHO ARE THEY?"
+];
+
+const finalLines = [
+    ">> WELL DONE",
+    ">> THE TRUTH HAS BEEN EXPOSED. ACCESS GRANTED.",
+    ">> THE CODE IS 121108250108, OPEN THE RIDDLER PROTOCOL FOR A SURPRISE ;)"
 ];
 
 
