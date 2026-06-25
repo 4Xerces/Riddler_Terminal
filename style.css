@@ -22,9 +22,17 @@ body {
 }
 
 
-.esdee{
+#esdee{
     position: absolute;
     z-index: 10;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    overflow: hidden;
+    outline: none;
+    font-size: 30px;
+    display: flex;
+    justify-self: center;
 }
 
 
@@ -50,7 +58,7 @@ body {
 
 #crt{
     background: #ffffff;
-    background: radial-gradient(circle, rgba(53, 54, 23, 0.08) 40%, #050505f6 90%);
+    background: radial-gradient(circle, rgba(53, 54, 23, 0.08) 75%, #050505f6 100%);
     z-index: 5;
 
     position: fixed;

@@ -37,6 +37,9 @@ const finalLines = [
 
 
 function intro_writer(){
+
+    document.getElementById("esdee").style.display = "none";
+
     if (sent < 2){
         let currentSent = intro[sent];
 
